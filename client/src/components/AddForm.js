@@ -1,13 +1,46 @@
 import React, {useState, useEffect} from 'react';
 import {FormTable} from './FormTable';
+import axios from 'axios';
+
+
+//===LOCAL=== 
+//LOCAL Function
+const getDataServer = async(url, cb) => {
+  try{
+    const response = await axios.get(url);
+    const data = response.data.data;
+    cb(null,data); // if not error, data send to the call back
+  } catch (error){
+    cb(error,null); // if error, error detail send to call back funtion
+  }
+}
+//LOCAL Variable
+
+
+
 
 //====Add Pokemon Form====
 export const AddPokemon = (props) => {
   const [name, setName] = useState('');
   const [str, setStr] = useState(0);
   const [def, setDef] = useState(0);
-  const [photo, setPhoto] =useState();
+  const [photo, setPhoto] = useState();
   const [elementName, setElementName] = useState('');
+  const [elementList, setElementList] = useState([]);
+  //const elementList = [];
+  //SIDE EFFECT===========
+  useEffect(() => {
+    //get Element list from the server and save to LOCAL VARIABLE
+    getDataServer('http://localhost:5000/api/element', (err, resData) => {
+      //let dataList = [];
+      err ? console.log(`error = ${err}`) : resData.map(data => {
+          setElementList(elementList => [...elementList, {value:data.id, txt: data.name}]);
+          //elementList.push({value:data.id, txt: data.name});
+      });
+    });
+  }, [])
+  
+  console.log(`INI ISI DARI element list :`, elementList);
 
 
   const onFormChanged = e => {
@@ -53,13 +86,7 @@ export const AddPokemon = (props) => {
     [
       {formType: 'label', txt:'Element', properties:{htmlFor:'element', className:'px-4 text-white font-bold'}},
       {formType: 'select', properties:{name:'elementName', value:elementName, onChange:onFormChanged, className:'w-full p-1' }, 
-      innerTag:[
-        {value:'fire', txt:'Fire'},
-        {value:'water', txt:'water'},
-        {value:'earth', txt:'earth'},
-        {value:'thunder', txt:'thunder'},
-        {value:'wind', txt:'wind'}
-      ]}
+        innerTag:elementList}
     ],
   ]
 

@@ -4,25 +4,26 @@ export const FormTable = (props) => {
   return(
     <form className={props.formClassName}>
       <table className={props.tableClassName}>
-        {props.items.map(item => (
-          <tr className={props.trClassName}>
+        <tbody>
+        {props.items.map((item, index) => (
+          <tr key={index} className={props.trClassName}>
             {
               
-              item.map(tag => {
+              item.map((tag, index) => {
                 let renderForm = '';
                 switch (tag.formType) {
-                  case 'label': renderForm = (<td className={props.tdClassName}><label {...tag.properties}>{tag.txt}</label></td>);
+                  case 'label': renderForm = (<td key={index} className={props.tdClassName}><label {...tag.properties}>{tag.txt}</label></td>);
                   break;
   
-                  case 'input': renderForm = (<td className={props.tdClassName}><input {...tag.properties}/></td>);
+                  case 'input': renderForm = (<td key={index} className={props.tdClassName}><input {...tag.properties}/></td>);
                   break;
   
                   case 'select': renderForm = (
-                    <td className={props.tdClassName}>
+                    <td key={index} className={props.tdClassName}>
                       <select {...tag.properties}>
                         <option value=''></option>
-                        {tag.innerTag.map(inner => (
-                          <option value={inner.value}>{inner.txt}</option>
+                        {tag.innerTag.map((inner, index) => (
+                          <option key={index} value={inner.value}>{inner.txt}</option>
                         ))}
                       </select>
                     </td>
@@ -42,6 +43,7 @@ export const FormTable = (props) => {
           </tr>
           
         ))}
+        </tbody>
       </table>
     </form>
   )
