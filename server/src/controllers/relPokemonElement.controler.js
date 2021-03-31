@@ -123,3 +123,16 @@ exports.findPokemonElement = (req, res) => {
   })
 }
 
+//Delete pokemon element relation by pokemon_id
+
+exports.deleteRelationByPokemonId = (req, res) => {
+  RelPokemonElement.deleteRelByPokemonId(req.params.id, (err, modelRes) => {
+    console.log(req.params.id);
+    err ? res.send(err) : res.json({
+      error: false,
+      message: 'element succesfully deleted by pokemon_id',
+      data: modelRes
+    })
+  })
+}
+

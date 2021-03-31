@@ -79,6 +79,14 @@ RelPokemonElement.findPokemonElement = (id, result) => {
   .catch(err => result(err, null));
 }
 
+//
+
+RelPokemonElement.deleteRelByPokemonId = (pokeId, result) => {
+  dbConn.query(`DELETE FROM ${relTable} WHERE pokemon_id = ?`, [pokeId])
+  .then(res => result(null, res))
+  .catch(err => result(err, null));
+}
+
 
 
 module.exports = RelPokemonElement;

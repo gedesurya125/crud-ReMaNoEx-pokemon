@@ -15,6 +15,7 @@ router.get("/elementofpokemon", relPokemonElementController.findAllPokemonElemen
 
 //Find pokemon's owned element by pokemon_id 
 router.get("/elementofpokemon/:id", relPokemonElementController.findPokemonElement);
+router.delete("/deletePokemonElement/:id", relPokemonElementController.deleteRelationByPokemonId);
 
 
 module.exports = router;
